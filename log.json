@@ -1,6 +1,13 @@
 {
-  "updated_at": "2026-01-28T20:04:00Z",
+  "updated_at": "2026-01-28T20:20:00Z",
   "items": [
+    {
+      "title": "VPN planning for China",
+      "status": "done",
+      "channel": "telegram",
+      "ts": "2026-01-28T20:20:00Z",
+      "desc": "Reviewed commercial VPN options; user will set up manually."
+    },
     {
       "title": "WeChat channel brainstorming",
       "status": "failed",
