@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alex Task Board</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --card: #161a22;
+      --muted: #9aa4b2;
+      --text: #e6edf3;
+      --accent: #7ee787;
+      --chip: #223;
+      --border: #2a3342;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 24px; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: var(--bg); color: var(--text);
+    }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+    h1 { font-size: 22px; margin: 0; }
+    .muted { color: var(--muted); font-size: 13px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px;
+      display: flex; flex-direction: column; gap: 8px; min-height: 120px;
+    }
+    .title { font-size: 15px; font-weight: 600; }
+    .meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .chip { background: var(--chip); border: 1px solid var(--border); padding: 3px 8px; border-radius: 999px; font-size: 12px; color: var(--muted); }
+    .status { color: var(--accent); font-weight: 600; }
+    .desc { color: var(--muted); font-size: 13px; line-height: 1.4; }
+    .footer { margin-top: 18px; font-size: 12px; color: var(--muted); }
+    a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Alex Task Board 🐧</h1>
+      <div class="muted">Auto-updated by Alex — latest activity log</div>
+    </div>
+    <div class="muted" id="lastUpdated">Loading…</div>
+  </header>
+
+  <div class="grid" id="cards"></div>
+
+  <div class="footer">
+    Source: <a href="https://github.com/fan-genmo/alex-task-board" target="_blank" rel="noreferrer">GitHub Repo</a>
+  </div>
+
+  <script>
+    async function load() {
+      const res = await fetch('./log.json', { cache: 'no-store' });
+      const data = await res.json();
+      const cards = document.getElementById('cards');
+      const lastUpdated = document.getElementById('lastUpdated');
+
+      const items = (data.items || []).slice().reverse();
+      if (data.updated_at) {
+        const d = new Date(data.updated_at);
+        lastUpdated.textContent = `Last updated: ${d.toLocaleString()}`;
+      }
+
+      if (items.length === 0) {
+        cards.innerHTML = '<div class="card"><div class="title">No tasks logged yet</div><div class="desc">Alex will update this board as tasks happen.</div></div>';
+        return;
+      }
+
+      cards.innerHTML = items.map(item => `
+        <div class="card">
+          <div class="title">${item.title || 'Untitled'}</div>
+          <div class="meta">
+            <span class="status">${item.status || 'done'}</span>
+            <span class="chip">${item.channel || 'telegram'}</span>
+            <span class="chip">${new Date(item.ts).toLocaleString()}</span>
+          </div>
+          ${item.desc ? `<div class="desc">${item.desc}</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    load();
+  </script>
+</body>
+</html>
