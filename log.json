@@ -1,6 +1,13 @@
 {
-  "updated_at": "2026-01-28T08:55:00Z",
+  "updated_at": "2026-01-28T20:04:00Z",
   "items": [
+    {
+      "title": "WeChat channel brainstorming",
+      "status": "failed",
+      "channel": "telegram",
+      "ts": "2026-01-28T20:04:00Z",
+      "desc": "WeCom/公众号 setup deemed too complex; sticking with Telegram."
+    },
     {
       "title": "Flow Matching MNIST tutorial",
       "status": "in progress",
